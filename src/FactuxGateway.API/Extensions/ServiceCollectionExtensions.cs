@@ -18,6 +18,34 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+    public static IServiceCollection AddGatewayCors(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        var allowedOrigins = configuration
+            .GetSection("Cors:AllowedOrigins")
+            .Get<string[]>()
+            ?? Array.Empty<string>();
+
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy =>
+            {
+                if (allowedOrigins.Length == 0)
+                {
+                    return;
+                }
+
+                policy
+                    .WithOrigins(allowedOrigins)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+        });
+
+        return services;
+    }
+
     private static void ValidateReverseProxyConfiguration(
         IConfigurationSection reverseProxySection,
         IHostEnvironment environment)
