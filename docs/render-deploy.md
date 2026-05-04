@@ -5,7 +5,7 @@
 Define estas variables en tu servicio de Render:
 
 - `ASPNETCORE_ENVIRONMENT=Production`
-- `ReverseProxy__Clusters__factux-business-api__Destinations__default__Address=https://TU-BUSINESS-API.onrender.com/`
+- `ReverseProxy__Clusters__factuxBusinessApi__Destinations__default__Address=https://TU-BUSINESS-API.onrender.com/`
 
 ## Variable opcional
 

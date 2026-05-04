@@ -1,7 +1,7 @@
 {
   "ReverseProxy": {
     "Clusters": {
-      "factux-business-api": {
+      "factuxBusinessApi": {
         "Destinations": {
           "default": {
             "Address": "https://localhost:5101/"
