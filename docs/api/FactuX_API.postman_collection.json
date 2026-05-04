@@ -1,0 +1,255 @@
+{
+  "info": {
+    "_postman_id": "e2e3a95d-78d1-4f7f-9c2d-2f2a7c8f1a11",
+    "name": "FactuX API",
+    "description": "Coleccion inicial de FactuX API. Incluye autenticacion JWT y operaciones CRUD de emisor.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "description": "Solicitudes para autenticacion y obtencion de JWT.",
+      "item": [
+        {
+          "name": "Obtener token JWT",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/Auth/token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Auth",
+                "token"
+              ]
+            },
+            "description": "Obtiene access_token para usar en endpoints protegidos."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "var jsonData = pm.response.json();",
+                  "pm.environment.set('accessToken', jsonData.access_token);",
+                  "pm.test('Token generado', function () {",
+                  "    pm.expect(jsonData.access_token).to.be.a('string').and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Emisor",
+      "description": "Endpoints protegidos por JWT para gestion de emisores.",
+      "item": [
+        {
+          "name": "Listar emisores",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/Issuers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Issuers"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Obtener emisor por id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/Issuers/{{issuerId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Issuers",
+                "{{issuerId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear emisor",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ruc\": \"1790012345001\",\n  \"razon_social\": \"MI EMPRESA S.A.\",\n  \"nombre_comercial\": \"MI EMPRESA\",\n  \"direccion_matriz\": \"Av. Principal 123\",\n  \"direccion_establecimiento\": \"Sucursal Norte\",\n  \"establecimiento\": \"001\",\n  \"punto_emision\": \"001\",\n  \"ambiente\": \"1\",\n  \"tipo_emision\": \"1\",\n  \"obligado_contabilidad\": \"SI\",\n  \"numero_contribuyente_especial\": null,\n  \"agente_retencion_resolucion\": null,\n  \"leyenda_rimpe\": null,\n  \"es_gran_contribuyente\": false,\n  \"certificado_p12\": \"{{p12Base64}}\",\n  \"certificado_password\": \"{{p12Password}}\",\n  \"vault_secret_name\": \"issuer-1790012345001-p12-password\",\n  \"fecha_caducidad_cert\": \"2027-12-31\",\n  \"cert_serial_number\": null,\n  \"cert_sujeto\": null,\n  \"logo_path\": null,\n  \"moneda\": \"DOLAR\",\n  \"estado\": \"ACTIVO\",\n  \"version_registro\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/Issuers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Issuers"
+              ]
+            },
+            "description": "Crea un emisor. certificado_p12 debe enviarse en Base64 y certificado_password se guarda en Key Vault."
+          }
+        },
+        {
+          "name": "Actualizar emisor",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{issuerId}}\",\n  \"ruc\": \"1790012345001\",\n  \"razon_social\": \"MI EMPRESA S.A. ACTUALIZADA\",\n  \"nombre_comercial\": \"MI EMPRESA\",\n  \"direccion_matriz\": \"Av. Principal 123\",\n  \"direccion_establecimiento\": \"Sucursal Norte\",\n  \"establecimiento\": \"001\",\n  \"punto_emision\": \"001\",\n  \"ambiente\": \"1\",\n  \"tipo_emision\": \"1\",\n  \"obligado_contabilidad\": \"SI\",\n  \"numero_contribuyente_especial\": null,\n  \"agente_retencion_resolucion\": null,\n  \"leyenda_rimpe\": null,\n  \"es_gran_contribuyente\": false,\n  \"certificado_p12\": \"{{p12Base64}}\",\n  \"vault_secret_name\": \"issuer-1790012345001-p12-password\",\n  \"fecha_caducidad_cert\": \"2027-12-31\",\n  \"cert_serial_number\": null,\n  \"cert_sujeto\": null,\n  \"logo_path\": null,\n  \"moneda\": \"DOLAR\",\n  \"estado\": \"ACTIVO\",\n  \"version_registro\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/Issuers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Issuers"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Eliminar emisor",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/Issuers/{{issuerId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Issuers",
+                "{{issuerId}}"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://localhost:7001"
+    },
+    {
+      "key": "username",
+      "value": "admin"
+    },
+    {
+      "key": "password",
+      "value": "admin123"
+    },
+    {
+      "key": "accessToken",
+      "value": ""
+    },
+    {
+      "key": "issuerId",
+      "value": "00000000-0000-0000-0000-000000000000"
+    },
+    {
+      "key": "p12Base64",
+      "value": "REEMPLAZAR_CON_BASE64_DEL_ARCHIVO_P12"
+    },
+    {
+      "key": "p12Password",
+      "value": "REEMPLAZAR_CON_PASSWORD_DEL_P12"
+    }
+  ]
+}

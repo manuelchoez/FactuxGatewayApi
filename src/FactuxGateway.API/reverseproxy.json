@@ -1,0 +1,50 @@
+{
+  "ReverseProxy": {
+    "Routes": {
+      "auth-token-route": {
+        "ClusterId": "factux-business-api",
+        "Match": {
+          "Path": "/api/Auth/token",
+          "Methods": [ "POST" ]
+        }
+      },
+      "issuers-list-route": {
+        "ClusterId": "factux-business-api",
+        "Match": {
+          "Path": "/api/Issuers",
+          "Methods": [ "GET" ]
+        }
+      },
+      "issuers-create-route": {
+        "ClusterId": "factux-business-api",
+        "Match": {
+          "Path": "/api/Issuers",
+          "Methods": [ "POST" ]
+        }
+      },
+      "issuers-update-route": {
+        "ClusterId": "factux-business-api",
+        "Match": {
+          "Path": "/api/Issuers",
+          "Methods": [ "PUT" ]
+        }
+      },
+      "issuers-by-id-route": {
+        "ClusterId": "factux-business-api",
+        "Match": {
+          "Path": "/api/Issuers/{issuerId}",
+          "Methods": [ "GET", "DELETE" ]
+        }
+      }
+    },
+    "Clusters": {
+      "factux-business-api": {
+        "Destinations": {
+          "default": {
+            "Address": "https://localhost:5101/"
+          }
+        }
+      }
+    }
+  }
+}
