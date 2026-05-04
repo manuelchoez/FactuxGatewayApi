@@ -36,15 +36,6 @@
           "Methods": [ "GET", "DELETE" ]
         }
       }
-    },
-    "Clusters": {
-      "factux-business-api": {
-        "Destinations": {
-          "default": {
-            "Address": "https://localhost:5101/"
-          }
-        }
-      }
     }
   }
 }
