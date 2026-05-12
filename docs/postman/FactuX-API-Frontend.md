@@ -1,23 +1,23 @@
-# FactuX API — Guía para frontend
+# FactuX API - Guia para frontend
 
-Este documento resume el contrato HTTP que usa la colección Postman `docs/api/FactuX_API.postman_collection.json`, para que el frontend pueda implementar cliente HTTP, manejo de JWT y formularios de emisor sin depender de Postman.
+Este documento resume el contrato HTTP que usa la coleccion Postman `docs/api/FactuX_API.postman_collection.json`, para que el frontend pueda implementar cliente HTTP, manejo de JWT y formularios de emisor y producto sin depender de Postman.
 
 ## URL base
 
 - En Postman la variable `baseUrl` por defecto es `https://localhost:7001`. Ese valor es solo un ejemplo de entorno.
-- El **gateway** de este repositorio (`FactuxGateway.API`) en desarrollo suele exponerse según `src/FactuxGateway.API/Properties/launchSettings.json`, por ejemplo:
-  - `http://localhost:5051`
-  - o `http://localhost:7232` (perfil `https`)
+- El gateway de este repositorio (`FactuxGateway.API`) en desarrollo suele exponerse segun `src/FactuxGateway.API/Properties/launchSettings.json`, por ejemplo:
+- `http://localhost:5051`
+- `https://localhost:7232` (perfil `https`)
 
-Configura en el frontend una variable de entorno (por ejemplo `VITE_API_BASE_URL` / `NEXT_PUBLIC_API_BASE_URL`) con la URL del gateway o de la API que consumas en cada ambiente. Todas las rutas de abajo son **relativas** a esa base (sin barra final recomendada, o normaliza en el cliente).
+Configura en el frontend una variable de entorno, por ejemplo `VITE_API_BASE_URL` o `NEXT_PUBLIC_API_BASE_URL`, con la URL del gateway o de la API que consumas en cada ambiente. Todas las rutas de abajo son relativas a esa base. Idealmente usa una URL sin barra final, o normalizala en tu cliente HTTP.
 
-## Autenticación (JWT)
+## Autenticacion (JWT)
 
 ### Obtener token
 
 | Campo | Valor |
 |--------|--------|
-| Método | `POST` |
+| Metodo | `POST` |
 | Ruta | `/api/Auth/token` |
 | `Content-Type` | `application/json` |
 
@@ -30,7 +30,7 @@ Configura en el frontend una variable de entorno (por ejemplo `VITE_API_BASE_URL
 }
 ```
 
-**Respuesta esperada (según scripts de Postman):** JSON con propiedad `access_token` (string). El frontend debe guardar ese valor (memoria segura, `sessionStorage` o flujo que defina el equipo) y enviarlo en las peticiones protegidas.
+**Respuesta esperada (segun scripts de Postman):** JSON con propiedad `access_token` de tipo `string`. El frontend debe guardar ese valor y enviarlo en las peticiones protegidas.
 
 ### Llamadas protegidas
 
@@ -40,13 +40,13 @@ Incluir en cada request:
 Authorization: Bearer <access_token>
 ```
 
-Los endpoints de emisores descritos abajo requieren este encabezado.
+Los endpoints de `Issuers` y `Products` requieren este encabezado.
 
 ## Emisores (Issuers)
 
-Prefijo común: `/api/Issuers`.
+Prefijo comun: `/api/Issuers`.
 
-| Operación | Método | Ruta | Notas |
+| Operacion | Metodo | Ruta | Notas |
 |-----------|--------|------|--------|
 | Listar | `GET` | `/api/Issuers` | Bearer obligatorio |
 | Obtener por id | `GET` | `/api/Issuers/{issuerId}` | `issuerId`: GUID |
@@ -54,9 +54,9 @@ Prefijo común: `/api/Issuers`.
 | Actualizar | `PUT` | `/api/Issuers` | Bearer + JSON; el cuerpo incluye `id` |
 | Eliminar | `DELETE` | `/api/Issuers/{issuerId}` | Bearer |
 
-### Crear emisor — cuerpo de ejemplo
+### Crear emisor - cuerpo de ejemplo
 
-Campos según la colección Postman. `certificado_p12` va en **Base64** del archivo `.p12`. La descripción en Postman indica que `certificado_password` se gestiona hacia almacén seguro (Key Vault) en backend.
+Campos segun la coleccion Postman. `certificado_p12` va en Base64 del archivo `.p12`. La descripcion en Postman indica que `certificado_password` se gestiona hacia almacen seguro (Key Vault) en backend.
 
 ```json
 {
@@ -87,9 +87,9 @@ Campos según la colección Postman. `certificado_p12` va en **Base64** del arch
 }
 ```
 
-### Actualizar emisor — cuerpo de ejemplo
+### Actualizar emisor - cuerpo de ejemplo
 
-Misma idea que crear; incluye `id` del emisor. En la colección no se envía `certificado_password` en el ejemplo de actualización (sí `certificado_p12` y `vault_secret_name`).
+Misma idea que crear; incluye `id` del emisor. En la coleccion no se envia `certificado_password` en el ejemplo de actualizacion, pero si `certificado_p12` y `vault_secret_name`.
 
 ```json
 {
@@ -120,18 +120,86 @@ Misma idea que crear; incluye `id` del emisor. En la colección no se envía `ce
 }
 ```
 
-## Checklist rápido para el cliente HTTP
+## Productos (Products)
 
-1. `POST /api/Auth/token` → leer `access_token`.
-2. Guardar token y adjuntar `Authorization: Bearer …` al resto de llamadas.
-3. `GET/POST/PUT` en `/api/Issuers` y `GET/DELETE` en `/api/Issuers/{id}` con los cuerpos JSON anteriores cuando aplique.
-4. Para subir certificado: leer el `.p12` en el navegador, convertir a Base64 y enviar en `certificado_p12` (payload puede ser grande; valorar límites de tamaño y UX).
+Prefijo comun: `/api/Products`.
+
+Cada producto pertenece a un `Issuer`, por lo que el frontend debe enviar `issuer_id` en crear y actualizar.
+
+| Operacion | Metodo | Ruta | Notas |
+|-----------|--------|------|--------|
+| Listar | `GET` | `/api/Products` | Bearer obligatorio |
+| Obtener por id | `GET` | `/api/Products/{productId}` | `productId`: GUID |
+| Crear | `POST` | `/api/Products` | Bearer + `Content-Type: application/json` |
+| Actualizar | `PUT` | `/api/Products` | Bearer + JSON; el cuerpo incluye `id` |
+| Eliminar | `DELETE` | `/api/Products/{productId}` | Bearer |
+
+### Crear producto - cuerpo de ejemplo
+
+```json
+{
+  "issuer_id": "00000000-0000-0000-0000-000000000000",
+  "codigo_principal": "SPTI",
+  "codigo_auxiliar": "SPTI-001",
+  "nombre": "SERVICIO PROFESIONAL TECNICO INFORMATICO",
+  "precio_unitario": 1840.00,
+  "informacion_adicional": "Producto de prueba asociado al emisor",
+  "tarifa_iva": "15%",
+  "aplica_iva_turismo": false,
+  "ice": false,
+  "codigo_descripcion_ice": null,
+  "estado": "ACTIVO",
+  "version_registro": 1
+}
+```
+
+### Actualizar producto - cuerpo de ejemplo
+
+```json
+{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "issuer_id": "00000000-0000-0000-0000-000000000000",
+  "codigo_principal": "SPTI",
+  "codigo_auxiliar": "SPTI-002",
+  "nombre": "SERVICIO PROFESIONAL TECNICO INFORMATICO ACTUALIZADO",
+  "precio_unitario": 1999.99,
+  "informacion_adicional": "Producto actualizado de prueba asociado al emisor",
+  "tarifa_iva": "15%",
+  "aplica_iva_turismo": false,
+  "ice": false,
+  "codigo_descripcion_ice": null,
+  "estado": "ACTIVO",
+  "version_registro": 1
+}
+```
+
+### Consideraciones de formulario para producto
+
+- `issuer_id`: obligatorio; debe corresponder a un emisor existente.
+- `codigo_principal`: maximo 25 caracteres.
+- `codigo_auxiliar`: maximo 25 caracteres.
+- `nombre`: obligatorio.
+- `precio_unitario`: numerico decimal.
+- `tarifa_iva`: valor tipo catalogo, por ejemplo `0%`, `5%`, `15%`, `EXENTO IVA`, `NO OBJETO IMPUESTO`.
+- `aplica_iva_turismo`: booleano.
+- `ice`: booleano.
+- `codigo_descripcion_ice`: usarlo cuando `ice = true`.
+
+## Checklist rapido para el cliente HTTP
+
+1. `POST /api/Auth/token` y leer `access_token`.
+2. Guardar token y adjuntar `Authorization: Bearer ...` al resto de llamadas.
+3. Consumir CRUD de emisores en `/api/Issuers`.
+4. Consumir CRUD de productos en `/api/Products`.
+5. En formularios de productos, enviar siempre `issuer_id`.
+6. Para subir certificado: leer el `.p12` en el navegador, convertir a Base64 y enviar en `certificado_p12`.
 
 ## Referencias en el repo
 
-- Colección Postman: `docs/api/FactuX_API.postman_collection.json`
-- Rutas del proxy (gateway): `src/FactuxGateway.API/reverseproxy.json`
+- Coleccion Postman: `docs/api/FactuX_API.postman_collection.json`
+- Rutas del proxy: `src/FactuxGateway.API/reverseproxy.json`
+- Configuracion local del gateway: `src/FactuxGateway.API/Properties/launchSettings.json`
 
 ## CORS y seguridad
 
-Si el frontend se sirve en otro origen que el API/gateway, el servidor debe exponer CORS adecuado; eso se configura en el gateway o en la API de negocio según el despliegue. No exponer credenciales en el repositorio; usar variables de entorno en el frontend para URL base y, si aplica, usuario de prueba solo en desarrollo.
+Si el frontend se sirve desde otro origen que el API o el gateway, el servidor debe exponer CORS adecuado para ese ambiente. No expongas credenciales en el repositorio; usa variables de entorno en el frontend para URL base y, si aplica, usuarios de prueba solo en desarrollo.

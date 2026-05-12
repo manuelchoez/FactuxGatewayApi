@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "e2e3a95d-78d1-4f7f-9c2d-2f2a7c8f1a11",
     "name": "FactuX API",
-    "description": "Coleccion inicial de FactuX API. Incluye autenticacion JWT y operaciones CRUD de emisor.",
+    "description": "Coleccion de FactuX API. Incluye autenticacion JWT y operaciones CRUD de emisores y productos.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -220,6 +220,168 @@
           }
         }
       ]
+    },
+    {
+      "name": "Productos",
+      "description": "Endpoints protegidos por JWT para gestion de productos.",
+      "item": [
+        {
+          "name": "Listar productos",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/Products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Products"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Obtener producto por id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/Products/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Products",
+                "{{productId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear producto",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"issuer_id\": \"{{issuerId}}\",\n  \"codigo_principal\": \"SPTI\",\n  \"codigo_auxiliar\": \"SPTI-001\",\n  \"nombre\": \"SERVICIO PROFESIONAL TECNICO INFORMATICO\",\n  \"precio_unitario\": 1840.00,\n  \"informacion_adicional\": \"Producto de prueba asociado al emisor\",\n  \"tarifa_iva\": \"15%\",\n  \"aplica_iva_turismo\": false,\n  \"ice\": false,\n  \"codigo_descripcion_ice\": null,\n  \"estado\": \"ACTIVO\",\n  \"version_registro\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/Products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Products"
+              ]
+            },
+            "description": "Crea un producto asociado a un emisor existente mediante issuer_id."
+          }
+        },
+        {
+          "name": "Actualizar producto",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{productId}}\",\n  \"issuer_id\": \"{{issuerId}}\",\n  \"codigo_principal\": \"SPTI\",\n  \"codigo_auxiliar\": \"SPTI-002\",\n  \"nombre\": \"SERVICIO PROFESIONAL TECNICO INFORMATICO ACTUALIZADO\",\n  \"precio_unitario\": 1999.99,\n  \"informacion_adicional\": \"Producto actualizado de prueba asociado al emisor\",\n  \"tarifa_iva\": \"15%\",\n  \"aplica_iva_turismo\": false,\n  \"ice\": false,\n  \"codigo_descripcion_ice\": null,\n  \"estado\": \"ACTIVO\",\n  \"version_registro\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/Products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Products"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Eliminar producto",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/Products/{{productId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "Products",
+                "{{productId}}"
+              ]
+            }
+          }
+        }
+      ]
     }
   ],
   "variable": [
@@ -241,6 +403,10 @@
     },
     {
       "key": "issuerId",
+      "value": "00000000-0000-0000-0000-000000000000"
+    },
+    {
+      "key": "productId",
       "value": "00000000-0000-0000-0000-000000000000"
     },
     {

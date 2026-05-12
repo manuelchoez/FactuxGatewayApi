@@ -35,6 +35,34 @@
           "Path": "/api/Issuers/{issuerId}",
           "Methods": [ "GET", "DELETE" ]
         }
+      },
+      "products-list-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/Products",
+          "Methods": [ "GET" ]
+        }
+      },
+      "products-create-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/Products",
+          "Methods": [ "POST" ]
+        }
+      },
+      "products-update-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/Products",
+          "Methods": [ "PUT" ]
+        }
+      },
+      "products-by-id-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/Products/{productId}",
+          "Methods": [ "GET", "DELETE" ]
+        }
       }
     }
   }
