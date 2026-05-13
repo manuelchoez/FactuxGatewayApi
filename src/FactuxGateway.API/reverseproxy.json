@@ -8,6 +8,27 @@
           "Methods": [ "POST" ]
         }
       },
+      "auth-me-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/Auth/me",
+          "Methods": [ "GET" ]
+        }
+      },
+      "auth-mfa-verify-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/Auth/mfa/verify",
+          "Methods": [ "POST" ]
+        }
+      },
+      "auth-mfa-status-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/Auth/mfa/status",
+          "Methods": [ "GET" ]
+        }
+      },
       "issuers-list-route": {
         "ClusterId": "factuxBusinessApi",
         "Match": {
@@ -61,6 +82,174 @@
         "ClusterId": "factuxBusinessApi",
         "Match": {
           "Path": "/api/Products/{productId}",
+          "Methods": [ "GET", "DELETE" ]
+        }
+      },
+      "users-list-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/Users",
+          "Methods": [ "GET" ]
+        }
+      },
+      "users-create-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/Users",
+          "Methods": [ "POST" ]
+        }
+      },
+      "users-update-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/Users",
+          "Methods": [ "PUT" ]
+        }
+      },
+      "users-by-id-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/Users/{userId}",
+          "Methods": [ "GET", "DELETE" ]
+        }
+      },
+      "roles-list-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/Roles",
+          "Methods": [ "GET" ]
+        }
+      },
+      "roles-create-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/Roles",
+          "Methods": [ "POST" ]
+        }
+      },
+      "roles-update-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/Roles",
+          "Methods": [ "PUT" ]
+        }
+      },
+      "roles-by-id-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/Roles/{roleId}",
+          "Methods": [ "GET", "DELETE" ]
+        }
+      },
+      "user-roles-list-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/UserRoles",
+          "Methods": [ "GET" ]
+        }
+      },
+      "user-roles-create-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/UserRoles",
+          "Methods": [ "POST" ]
+        }
+      },
+      "user-roles-update-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/UserRoles",
+          "Methods": [ "PUT" ]
+        }
+      },
+      "user-roles-by-id-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/UserRoles/{userRoleId}",
+          "Methods": [ "GET", "DELETE" ]
+        }
+      },
+      "user-issuers-list-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/UserIssuers",
+          "Methods": [ "GET" ]
+        }
+      },
+      "user-issuers-create-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/UserIssuers",
+          "Methods": [ "POST" ]
+        }
+      },
+      "user-issuers-update-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/UserIssuers",
+          "Methods": [ "PUT" ]
+        }
+      },
+      "user-issuers-by-id-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/UserIssuers/{userIssuerId}",
+          "Methods": [ "GET", "DELETE" ]
+        }
+      },
+      "subscription-plans-list-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/SubscriptionPlans",
+          "Methods": [ "GET" ]
+        }
+      },
+      "subscription-plans-create-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/SubscriptionPlans",
+          "Methods": [ "POST" ]
+        }
+      },
+      "subscription-plans-update-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/SubscriptionPlans",
+          "Methods": [ "PUT" ]
+        }
+      },
+      "subscription-plans-by-id-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/SubscriptionPlans/{subscriptionPlanId}",
+          "Methods": [ "GET", "DELETE" ]
+        }
+      },
+      "issuer-subscriptions-list-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/IssuerSubscriptions",
+          "Methods": [ "GET" ]
+        }
+      },
+      "issuer-subscriptions-create-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/IssuerSubscriptions",
+          "Methods": [ "POST" ]
+        }
+      },
+      "issuer-subscriptions-update-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/IssuerSubscriptions",
+          "Methods": [ "PUT" ]
+        }
+      },
+      "issuer-subscriptions-by-id-route": {
+        "ClusterId": "factuxBusinessApi",
+        "Match": {
+          "Path": "/api/IssuerSubscriptions/{issuerSubscriptionId}",
           "Methods": [ "GET", "DELETE" ]
         }
       }
